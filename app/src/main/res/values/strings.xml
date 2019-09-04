@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">KUrbanDictionary</string>
+
+    <string name="query_term">Search</string>
+    <string name="no_results">No results found</string>
+    <string name="no_network_connection">There is no network connection.</string>
+    <string name="keep_in_db">Keeping term in database</string>
+</resources>
