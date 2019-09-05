@@ -29,7 +29,7 @@ object WebService : Callback<TermDefinitionList> {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
-        api = retrofit.create(UrbanDictionaryApi::class.java!!)
+        api = retrofit.create(UrbanDictionaryApi::class.java)
     }
 
     public fun fetchDefinitions(word : String, webServiceClient : WebServiceCallback) {

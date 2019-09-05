@@ -7,8 +7,12 @@ import com.outerspace.kurbandictionary.model.WebServiceCallback
 class MainPresenter : WebServiceCallback {
     private lateinit var stringConsumer : (String) -> (Unit)
 
-    public fun fetchDefinitions(term : String, stringConsumer: (String) -> (Unit)) {
+    private lateinit var inProgress : (Boolean) -> (Unit)
+
+    fun fetchDefinitions(term : String, stringConsumer: (String) -> (Unit), inProgress: (Boolean) -> (Unit)) {
         this.stringConsumer = stringConsumer
+        this.inProgress = inProgress
+        this.inProgress(true)
         WebService.fetchDefinitions(term, this)
     }
 
@@ -18,9 +22,11 @@ class MainPresenter : WebServiceCallback {
             sb.append(definition.definition).append('\n')
         }
         stringConsumer(sb.toString())
+        inProgress(false)
     }
 
     override fun onFailure(message: String) {
         stringConsumer(message)
+        inProgress(false)
     }
 }
