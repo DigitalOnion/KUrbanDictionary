@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import com.outerspace.kurbandictionary.model.WebService
 import com.outerspace.kurbandictionary.presenter.MainPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -16,18 +17,22 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val presenter: MainPresenter = MainPresenter();
+    private lateinit var presenter: MainPresenter;
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        presenter = MainPresenter(result_text::setText, this::showProgress)
+        presenter.webService = WebService(presenter)    // presenter implements WebServiceCallback
     }
 
     fun onClickQueryTerm(view : View) {
-        presenter.fetchDefinitions(term_entry.text.toString(), result_text::setText, this::showProgress )
+        presenter.fetchDefinitions(term_entry.text.toString())
     }
 
     fun showProgress(inProgress : Boolean) {
         progress.visibility = if(inProgress) View.VISIBLE else View.GONE
     }
 }
+

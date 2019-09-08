@@ -3,17 +3,18 @@ package com.outerspace.kurbandictionary.presenter
 import com.outerspace.kurbandictionary.api.TermDefinition
 import com.outerspace.kurbandictionary.model.WebService
 import com.outerspace.kurbandictionary.model.WebServiceCallback
+import com.outerspace.kurbandictionary.model.WebServiceInterface
 
-class MainPresenter : WebServiceCallback {
-    private lateinit var stringConsumer : (String) -> (Unit)
+class MainPresenter(stringConsumer : (String) -> (Unit), inProgress: (Boolean) -> (Unit))
+    : WebServiceCallback {
+    private val stringConsumer : (String) -> (Unit) = stringConsumer
+    private val inProgress : (Boolean) -> (Unit) = inProgress
 
-    private lateinit var inProgress : (Boolean) -> (Unit)
+    lateinit var webService : WebServiceInterface
 
-    fun fetchDefinitions(term : String, stringConsumer: (String) -> (Unit), inProgress: (Boolean) -> (Unit)) {
-        this.stringConsumer = stringConsumer
-        this.inProgress = inProgress
+    fun fetchDefinitions(term : String) {
         this.inProgress(true)
-        WebService.fetchDefinitions(term, this)
+        webService.fetchDefinitions(term)
     }
 
     override fun onSuccess(termDefinitions: List<TermDefinition>) {
